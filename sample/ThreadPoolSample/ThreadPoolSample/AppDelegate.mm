@@ -20,22 +20,22 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    static ThreadPool pool(2);
-
-    pool.enqueue([]{ NSLog(@"hello world"); });
-    pool.enqueue([]{ NSLog(@"hello world"); });
-    pool.enqueue([]{ NSLog(@"hello world"); });
-    pool.enqueue([]{ NSLog(@"hello world"); });
-    pool.enqueue([]{ NSLog(@"hello world"); });
-    pool.enqueue([]{ NSLog(@"hello world"); });
-    pool.enqueue([]{ NSLog(@"hello world"); });
-    pool.enqueue([]{ NSLog(@"hello world"); });
-    pool.enqueue([]{ NSLog(@"hello world"); });
-    pool.enqueue([]{ NSLog(@"hello world"); });
-    pool.enqueue([]{ NSLog(@"hello world"); });
-    pool.enqueue([]{ NSLog(@"hello world"); });
-
     
+    static ThreadPool pool(2);
+    pool.enqueue([]{
+        // todo: workload
+    });
+    
+
+    NSInteger idx = 0;
+    pool.enqueue([idx]{ NSLog(@"begin%@",@(idx)); sleep(arc4random() % 10); NSLog(@"end%@",@(idx)); }); idx++;
+    pool.enqueue([idx]{ NSLog(@"begin%@",@(idx)); sleep(arc4random() % 10); NSLog(@"end%@",@(idx)); }); idx++;
+    pool.enqueue([idx]{ NSLog(@"begin%@",@(idx)); sleep(arc4random() % 10); NSLog(@"end%@",@(idx)); }); idx++;
+    pool.enqueue([idx]{ NSLog(@"begin%@",@(idx)); sleep(arc4random() % 10); NSLog(@"end%@",@(idx)); }); idx++;
+    pool.enqueue([idx]{ NSLog(@"begin%@",@(idx)); sleep(arc4random() % 10); NSLog(@"end%@",@(idx)); }); idx++;
+    pool.enqueue([idx]{ NSLog(@"begin%@",@(idx)); sleep(arc4random() % 10); NSLog(@"end%@",@(idx)); }); idx++;
+    pool.enqueue([idx]{ NSLog(@"begin%@",@(idx)); sleep(arc4random() % 10); NSLog(@"end%@",@(idx)); }); idx++;
+    pool.enqueue([idx]{ NSLog(@"begin%@",@(idx)); sleep(arc4random() % 10); NSLog(@"end%@",@(idx)); }); idx++;
 
     
     
