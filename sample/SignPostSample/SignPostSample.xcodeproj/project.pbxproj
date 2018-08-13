@@ -7,19 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D1C7F3AC2120762600B81EB0 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = D1C7F3AB2120762600B81EB0 /* AppDelegate.mm */; };
+		D1C7F3AC2120762600B81EB0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D1C7F3AB2120762600B81EB0 /* AppDelegate.m */; };
 		D1C7F3AF2120762600B81EB0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1C7F3AE2120762600B81EB0 /* ViewController.m */; };
 		D1C7F3B22120762600B81EB0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1C7F3B02120762600B81EB0 /* Main.storyboard */; };
 		D1C7F3B42120762600B81EB0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1C7F3B32120762600B81EB0 /* Assets.xcassets */; };
 		D1C7F3B72120762600B81EB0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1C7F3B52120762600B81EB0 /* LaunchScreen.storyboard */; };
 		D1C7F3BA2120762600B81EB0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D1C7F3B92120762600B81EB0 /* main.m */; };
-		D1C7F3C72120766600B81EB0 /* ThreadPool.mm in Sources */ = {isa = PBXBuildFile; fileRef = D1C7F3C62120766600B81EB0 /* ThreadPool.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		D1C7F3A72120762600B81EB0 /* SignPostSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SignPostSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1C7F3AA2120762600B81EB0 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		D1C7F3AB2120762600B81EB0 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		D1C7F3AB2120762600B81EB0 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		D1C7F3AD2120762600B81EB0 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		D1C7F3AE2120762600B81EB0 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		D1C7F3B12120762600B81EB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -27,8 +26,6 @@
 		D1C7F3B62120762600B81EB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D1C7F3B82120762600B81EB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D1C7F3B92120762600B81EB0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		D1C7F3C52120766600B81EB0 /* ThreadPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadPool.h; sourceTree = "<group>"; };
-		D1C7F3C62120766600B81EB0 /* ThreadPool.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ThreadPool.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,9 +58,8 @@
 		D1C7F3A92120762600B81EB0 /* SignPostSample */ = {
 			isa = PBXGroup;
 			children = (
-				D1C7F3C42120766600B81EB0 /* threadpool */,
 				D1C7F3AA2120762600B81EB0 /* AppDelegate.h */,
-				D1C7F3AB2120762600B81EB0 /* AppDelegate.mm */,
+				D1C7F3AB2120762600B81EB0 /* AppDelegate.m */,
 				D1C7F3AD2120762600B81EB0 /* ViewController.h */,
 				D1C7F3AE2120762600B81EB0 /* ViewController.m */,
 				D1C7F3B02120762600B81EB0 /* Main.storyboard */,
@@ -73,15 +69,6 @@
 				D1C7F3B92120762600B81EB0 /* main.m */,
 			);
 			path = SignPostSample;
-			sourceTree = "<group>";
-		};
-		D1C7F3C42120766600B81EB0 /* threadpool */ = {
-			isa = PBXGroup;
-			children = (
-				D1C7F3C52120766600B81EB0 /* ThreadPool.h */,
-				D1C7F3C62120766600B81EB0 /* ThreadPool.mm */,
-			);
-			path = threadpool;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -156,8 +143,7 @@
 			files = (
 				D1C7F3AF2120762600B81EB0 /* ViewController.m in Sources */,
 				D1C7F3BA2120762600B81EB0 /* main.m in Sources */,
-				D1C7F3AC2120762600B81EB0 /* AppDelegate.mm in Sources */,
-				D1C7F3C72120766600B81EB0 /* ThreadPool.mm in Sources */,
+				D1C7F3AC2120762600B81EB0 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

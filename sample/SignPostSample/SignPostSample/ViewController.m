@@ -17,7 +17,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    
+    CFTimeInterval begin = CACurrentMediaTime();
+    // do something
+    CFTimeInterval end = CACurrentMediaTime();
+    NSLog(@"cost = %@",@(end - begin));
+    
 }
+
 
 
 @end
