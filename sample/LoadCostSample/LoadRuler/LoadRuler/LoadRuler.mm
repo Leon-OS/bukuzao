@@ -117,8 +117,7 @@ static NSMutableArray<NSString*> *g_loadcosts;
             for(unsigned int methodIndex = 0; methodIndex < methodCount; ++methodIndex){
                 Method method = methods[methodIndex];
                 std::string methodName(sel_getName(method_getName(method)));
-                NSLog(@"%s has method named '%s' of encoding '%s'", class_getName(cls), methodName.c_str(), method_getTypeEncoding(method));
-                
+
                 if(methodName == "load"){
                     SEL swizzledSelector = NSSelectorFromString([NSString stringWithFormat:@"LoadRulerSwizzledLoad%@",@(currentLoadIndex)]);
                     
