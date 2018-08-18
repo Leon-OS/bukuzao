@@ -93,6 +93,8 @@ static NSMutableArray<NSString*> *g_loadcosts;
 }
 
 +(void)load{
+//    PrintAllImagePaths();
+
     SEL originalSelector = @selector(load);
     Class rulerClass = [LoadRuler class];
     

@@ -128,9 +128,9 @@
 		D1A6987B2128592700F9366A = {
 			isa = PBXGroup;
 			children = (
-				D1DBD887212871DF00AE5472 /* LoadRuler.xcodeproj */,
 				D1DBD8492128606F00AE5472 /* FirstDylib.xcodeproj */,
 				D1DBD84F2128607200AE5472 /* SecondDylib.xcodeproj */,
+				D1DBD887212871DF00AE5472 /* LoadRuler.xcodeproj */,
 				D1A698862128592700F9366A /* LoadCostSample */,
 				D1A698852128592700F9366A /* Products */,
 				D1DBD8592128608E00AE5472 /* Frameworks */,
