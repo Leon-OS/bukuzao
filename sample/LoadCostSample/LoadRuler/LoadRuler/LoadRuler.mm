@@ -47,34 +47,58 @@ static void AppendProductImagePaths(std::vector<std::string> & product_image_pat
 
 static NSMutableArray<NSString*> *g_loadcosts;
 
+
+#define LoadRulerBegin \
+    NSLog(@">>>> before");\
+    CFTimeInterval begin = CACurrentMediaTime();
+
+#define LoadRulerEnd \
+    CFTimeInterval end = CACurrentMediaTime();\
+    if(!g_loadcosts){\
+    g_loadcosts = [[NSMutableArray alloc]initWithCapacity:10];\
+    }\
+    [g_loadcosts addObject:[NSString stringWithFormat:@"%@ - %@ms",NSStringFromClass([self class]), @(1000 * (end - begin))]];\
+    NSLog(@"<<<< after");
+
 @interface LoadRuler : NSObject
 @end
 @implementation LoadRuler
 
 
-+(void)LoadRulerSwizzledLoad{
-    NSLog(@">>>> before");
-    
-    CFTimeInterval begin = CACurrentMediaTime();
-    [self LoadRulerSwizzledLoad];
-    CFTimeInterval end = CACurrentMediaTime();
-    
-    if(!g_loadcosts){
-        g_loadcosts = [[NSMutableArray alloc]initWithCapacity:10];
-    }
-    [g_loadcosts addObject:[NSString stringWithFormat:@"%@ - %@ms",NSStringFromClass([self class]), @(1000 * (end - begin))]];
-    NSLog(@"<<<< after");
++(void)LoadRulerSwizzledLoad0{
+    LoadRulerBegin;
+    [self LoadRulerSwizzledLoad0];
+    LoadRulerEnd;
 }
 
++(void)LoadRulerSwizzledLoad1{
+    LoadRulerBegin;
+    [self LoadRulerSwizzledLoad1];
+    LoadRulerEnd;
+}
++(void)LoadRulerSwizzledLoad2{
+    LoadRulerBegin;
+    [self LoadRulerSwizzledLoad2];
+    LoadRulerEnd;
+}
++(void)LoadRulerSwizzledLoad3{
+    LoadRulerBegin;
+    [self LoadRulerSwizzledLoad3];
+    LoadRulerEnd;
+}
++(void)LoadRulerSwizzledLoad4{
+    LoadRulerBegin;
+    [self LoadRulerSwizzledLoad4];
+    LoadRulerEnd;
+}
 
 +(void)load{
+    SEL originalSelector = @selector(load);
     Class rulerClass = [LoadRuler class];
     
     std::vector<std::string> product_image_paths;
     AppendProductImagePaths(product_image_paths);
     for(auto path : product_image_paths){
-        NSLog(@"path = %s",path.c_str());
-        
         unsigned int classCount = 0;
         const char ** classNames = objc_copyClassNamesForImage(path.c_str(),&classCount);
 
@@ -83,20 +107,20 @@ static NSMutableArray<NSString*> *g_loadcosts;
             Class cls = object_getClass(NSClassFromString(className));
             
             // 不要把自己hook了
-            if([className isEqualToString:@"LoadRuler"]){
+            if(cls == [self class]){
                 continue;
             }
 
             unsigned int methodCount = 0;
             Method * methods = class_copyMethodList(cls, &methodCount);
+            NSUInteger currentLoadIndex = 0;
             for(unsigned int methodIndex = 0; methodIndex < methodCount; ++methodIndex){
                 Method method = methods[methodIndex];
                 std::string methodName(sel_getName(method_getName(method)));
                 NSLog(@"%s has method named '%s' of encoding '%s'", class_getName(cls), methodName.c_str(), method_getTypeEncoding(method));
                 
                 if(methodName == "load"){
-                    SEL originalSelector = @selector(load);
-                    SEL swizzledSelector = @selector(LoadRulerSwizzledLoad);
+                    SEL swizzledSelector = NSSelectorFromString([NSString stringWithFormat:@"LoadRulerSwizzledLoad%@",@(currentLoadIndex)]);
                     
                     Method originalMethod = method;
                     Method swizzledMethod = class_getClassMethod(rulerClass, swizzledSelector);
@@ -106,12 +130,14 @@ static NSMutableArray<NSString*> *g_loadcosts;
                     if(!addSuccess){
                         // 已经存在，则添加新的selector
                         BOOL didAddSuccess = class_addMethod(cls, swizzledSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod));
-//                        if(didAddSuccess){
+                        if(didAddSuccess){
                             // 然后交换
                             swizzledMethod = class_getClassMethod(cls, swizzledSelector);
                             method_exchangeImplementations(originalMethod, swizzledMethod);
-//                        }
+                        }
                     }
+                    
+                    ++currentLoadIndex;
                 }
             }
         }
