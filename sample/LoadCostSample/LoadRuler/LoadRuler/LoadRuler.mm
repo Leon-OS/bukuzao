@@ -51,7 +51,9 @@ static NSMutableArray<NSString*> *g_loadcosts;
 @end
 @implementation LoadRuler
 
+
 +(void)LoadRulerSwizzledLoad{
+    NSLog(@">>>> before");
     
     CFTimeInterval begin = CACurrentMediaTime();
     [self LoadRulerSwizzledLoad];
@@ -61,17 +63,18 @@ static NSMutableArray<NSString*> *g_loadcosts;
         g_loadcosts = [[NSMutableArray alloc]initWithCapacity:10];
     }
     [g_loadcosts addObject:[NSString stringWithFormat:@"%@ - %@ms",NSStringFromClass([self class]), @(1000 * (end - begin))]];
+    NSLog(@"<<<< after");
 }
 
-+(void)load{
-    SEL originalSelector = @selector(load);
-    SEL swizzledSelector = @selector(LoadRulerSwizzledLoad);
-    
-    Class rulerClass = [LoadRuler class];
 
++(void)load{
+    Class rulerClass = [LoadRuler class];
+    
     std::vector<std::string> product_image_paths;
     AppendProductImagePaths(product_image_paths);
     for(auto path : product_image_paths){
+        NSLog(@"path = %s",path.c_str());
+        
         unsigned int classCount = 0;
         const char ** classNames = objc_copyClassNamesForImage(path.c_str(),&classCount);
 
@@ -79,19 +82,36 @@ static NSMutableArray<NSString*> *g_loadcosts;
             NSString *className = [NSString stringWithUTF8String:classNames[classIndex]];
             Class cls = object_getClass(NSClassFromString(className));
             
-            Method originalMethod = class_getClassMethod(cls, originalSelector);
-            Method swizzledMethod = class_getClassMethod(rulerClass, swizzledSelector);
-            
-            BOOL addSuccess = class_addMethod(cls, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod));
-            // 添加成功，则说明不存在load
-            // 但动态添加的load，不会被调用
-            if(!addSuccess){
-                // 已经存在，则添加新的selector
-                BOOL didAddSuccess = class_addMethod(cls, swizzledSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod));
-                if(didAddSuccess){
-                    // 然后交换
-                    swizzledMethod = class_getClassMethod(cls, swizzledSelector);
-                    method_exchangeImplementations(originalMethod, swizzledMethod);
+            // 不要把自己hook了
+            if([className isEqualToString:@"LoadRuler"]){
+                continue;
+            }
+
+            unsigned int methodCount = 0;
+            Method * methods = class_copyMethodList(cls, &methodCount);
+            for(unsigned int methodIndex = 0; methodIndex < methodCount; ++methodIndex){
+                Method method = methods[methodIndex];
+                std::string methodName(sel_getName(method_getName(method)));
+                NSLog(@"%s has method named '%s' of encoding '%s'", class_getName(cls), methodName.c_str(), method_getTypeEncoding(method));
+                
+                if(methodName == "load"){
+                    SEL originalSelector = @selector(load);
+                    SEL swizzledSelector = @selector(LoadRulerSwizzledLoad);
+                    
+                    Method originalMethod = method;
+                    Method swizzledMethod = class_getClassMethod(rulerClass, swizzledSelector);
+                    
+                    BOOL addSuccess = class_addMethod(cls, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod));
+                    // 添加成功，则说明不存在load。但动态添加的load，不会被调用。与load的调用方式有关。
+                    if(!addSuccess){
+                        // 已经存在，则添加新的selector
+                        BOOL didAddSuccess = class_addMethod(cls, swizzledSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod));
+//                        if(didAddSuccess){
+                            // 然后交换
+                            swizzledMethod = class_getClassMethod(cls, swizzledSelector);
+                            method_exchangeImplementations(originalMethod, swizzledMethod);
+//                        }
+                    }
                 }
             }
         }

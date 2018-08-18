@@ -15,4 +15,9 @@
     usleep(1000 * 15);
 }
 
+- (void)hello{
+    
+    NSLog(@"hello");
+}
+
 @end
