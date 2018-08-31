@@ -31,10 +31,9 @@
     NSLog(@"vm kern page size = %lu bytes (%lu kb)",vmkern,vmkern/1024);
     
     
-//    mmap(
-    
     NSLog(@"page mask = %lu bytes (%lu kb)",PAGE_MASK,PAGE_MASK/1024);
     NSLog(@"page size = %lu bytes (%lu kb)",PAGE_SIZE,PAGE_SIZE/1024);
+    
 }
 
 @end
