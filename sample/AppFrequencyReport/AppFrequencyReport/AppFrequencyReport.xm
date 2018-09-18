@@ -6,12 +6,62 @@
 
 #import <UIKit/UIKit.h>
 
+%hook FBSceneManager
+
+- (void)_beginSynchronizationBlock{
+    NSLog(@"%@ %@",@"FBSceneManager",NSStringFromSelector(_cmd));
+    %orig;
+}
+- (void)_endSynchronizationBlock{
+    NSLog(@"%@ %@",@"FBSceneManager",NSStringFromSelector(_cmd));
+    %orig;
+}
+
+%end
+
+%hook FBSynchronizedTransactionGroup
+
+-(void)addSynchronizedTransaction:(id)arg1{
+    NSLog(@"%@ %@ : arg1=%@",@"FBSynchronizedTransactionGroup",NSStringFromSelector(_cmd),arg1);
+    %orig;
+}
+
+//-(void)synchronizedTransaction:(id)arg1 didCommitSynchronizedTransactions:(id)arg2
+//{
+//    NSLog(@"%@ %@ : arg1=%@,arg2=%@",@"FBSynchronizedTransactionGroup",NSStringFromSelector(_cmd),arg1,arg2);
+//    %orig;
+//}
+//
+//-(void)synchronizedTransactionReadyToCommit:(id)arg1{
+//    NSLog(@"%@ %@ : arg1=%@",@"FBSynchronizedTransactionGroup",NSStringFromSelector(_cmd),arg1);
+//    %orig;
+//}
+
+-(void)performSynchronizedCommit{
+    NSLog(@"%@ %@",@"FBSynchronizedTransactionGroup",NSStringFromSelector(_cmd));
+    %orig;
+}
+
+%end
+
 %hook FBWorkspaceEventQueue
 
-- (void)executeOrAppendEvent:(id)arg
+- (void)executeOrAppendEvent:(id)arg1
 {
-    NSLog(@"qiweizf : executeOrAppendEvent arg = %@",arg);
+    NSLog(@"%@ %@ : arg1=%@",@"FBWorkspaceEventQueue",NSStringFromSelector(_cmd),arg1);
+    %orig;
+}
+-(void)executeOrPrependEvents:(id)arg1{
+    NSLog(@"%@ %@ : arg1=%@",@"FBWorkspaceEventQueue",NSStringFromSelector(_cmd),arg1);
+    %orig;
+}
+-(void)executeOrPrependEvent:(id)arg1{
+    NSLog(@"%@ %@ : arg1=%@",@"FBWorkspaceEventQueue",NSStringFromSelector(_cmd),arg1);
+    %orig;
+}
 
+-(void)executeOrInsertEvents:(id)arg1 atPosition:(NSUInteger)arg2{
+    NSLog(@"%@ %@ : arg1=%@,arg2=%@",@"FBWorkspaceEventQueue",NSStringFromSelector(_cmd),arg1,@(arg2));
     %orig;
 }
 
@@ -21,14 +71,12 @@
 
 - (void)iconTapped:(id)arg1
 {
-    NSLog(@"qiweizf : icon tapped");
-    
+    NSLog(@"%@ %@ : arg1=%@",@"SBIconController",NSStringFromSelector(_cmd),arg1);
     %orig;
 }
 - (void)_launchFromIconView:(id)arg1
 {
-    NSLog(@"qiweizf _launchFromIconView : %@",arg1);
-    
+    NSLog(@"%@ %@ : arg1=%@",@"SBIconController",NSStringFromSelector(_cmd),arg1);
     %orig;
 }
 
@@ -38,75 +86,27 @@
 %hook SBFolderController
 - (void)prepareToLaunchTappedIcon:(id)arg1 completionHandler:(id)arg2
 {
-    NSLog(@"qiweizf prepare to launch");
+    NSLog(@"%@ %@ : arg1=%@,arg2=%@",@"SBFolderController",NSStringFromSelector(_cmd),arg1,arg2);
     %orig(arg1,arg2);
 }
 - (void)setCurrentPageIndexToListDirectlyContainingIcon:(id)arg1 animated:(BOOL)arg2 completion:(id)arg3
 {
-    NSLog(@"qiweizf set current page index to");
+    NSLog(@"%@ %@ : arg1=%@,arg2=%@,arg3=%@",@"SBFolderController",NSStringFromSelector(_cmd),arg1,@(arg2),arg3);
 }
 
 - (BOOL)isDisplayingIcon:(id)arg1
 {
     BOOL ret =  %orig;
-    NSLog(@"qiweizf is displaying icon : %@",@(ret));
+    NSLog(@"%@ %@ : arg1=%@,return=%@",@"SBFolderController",NSStringFromSelector(_cmd),arg1,@(ret));
     return ret;
 }
 
 - (BOOL)_isAppIconForceTouchControllerPeekingOrShowing
 {
     BOOL ret =  %orig;
-    NSLog(@"qiweizf isAppIconForceTouchControllerPeekingOrShowing : %@",@(ret));
+    NSLog(@"%@ %@ : return=%@",@"SBFolderController",NSStringFromSelector(_cmd),@(ret));
     return ret;
 }
 %end
 
 
-//%hook SBApplicationIcon
-//
-//- (BOOL)isApplicationIcon
-//{
-//    BOOL ret =  %orig;
-//    NSLog(@"qiweizf sbapplicationicon is application icon : %@",@(ret));
-//    return ret;
-//}
-//
-//- (BOOL)isAnyTerminationAssertionHeld
-//{
-//    BOOL ret =  %orig;
-//    NSLog(@"qiweizf sbapplicationicon isAnyTerminationAssertionHeld : %@",@(ret));
-//    return ret;
-//}
-//
-//%end
-//
-//%hook SBIcon
-//
-//- (BOOL)isApplicationIcon
-//{
-//    BOOL ret =  %orig;
-//    NSLog(@"qiweizf sbicon is application icon : %@",@(ret));
-//    return ret;
-//}
-//
-//
-//- (BOOL)isFolderIcon
-//{
-//    BOOL ret =  %orig;
-//    NSLog(@"qiweizf sbicon isfoldericon : %@",@(ret));
-//    return ret;
-//}
-//
-//%end
-//
-//
-//%hook SBFolderIcon
-//
-//- (BOOL)isFolderIcon
-//{
-//    BOOL ret =  %orig;
-//    NSLog(@"qiweizf sbfoldericon isfoldericon : %@",@(ret));
-//    return ret;
-//}
-//
-//%end
