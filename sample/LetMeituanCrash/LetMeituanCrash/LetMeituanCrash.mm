@@ -72,7 +72,9 @@ static void ExternallyPostedNotification(CFNotificationCenterRef center, void *o
 {
     NSLog(@"AAAAMakingCrash world");
 
-    [self performSelector:NSSelectorFromString(@"ThisIsACrashTestingMethod:") withObject:nil];
+//    [self performSelector:NSSelectorFromString(@"ThisIsACrashTestingMethod:") withObject:nil];
+    
+    char *a = (char*)0x1; *a = 1;
 }
 
 @end
