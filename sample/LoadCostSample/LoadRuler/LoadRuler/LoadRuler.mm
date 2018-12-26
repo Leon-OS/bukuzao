@@ -109,7 +109,7 @@ static NSMutableArray<NSString*> *g_loadcosts;
             Class cls = object_getClass(NSClassFromString(className));
             
             // 不要把自己hook了
-            if(cls == [self class]){
+            if([className isEqualToString:NSStringFromClass([self class])]){
                 continue;
             }
 
